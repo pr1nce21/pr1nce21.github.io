@@ -1,2 +1,493 @@
-<!doctype html><meta charset="utf-8">
-<title>It works</title><h1>It works 🎉</h1>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Your Brand — Mini Game Site (Enhanced)</title>
+  <meta name="description" content="A clean, fast, responsive website with a simple built-in game, live clock, and a clicker mini-app." />
+  <meta name="theme-color" content="#0ea5e9" />
+  <meta property="og:title" content="Your Brand — Mini Game Site" />
+  <meta property="og:description" content="Play a simple reflex game, try the clicker, and enjoy a live clock." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://example.com" />
+  <meta property="og:image" content="https://picsum.photos/1200/630" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230ea5e9'/><text x='50' y='58' font-size='56' text-anchor='middle' fill='white' font-family='Arial,Helvetica,sans-serif'>Y</text></svg>">
+  <style>
+    :root{
+      --bg:#0b1220; --panel:#101828; --muted:#9aa4b2; --text:#e5e7eb; --brand:#0ea5e9; --accent:#22c55e; --ring:rgba(14,165,233,.4);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji"; color:var(--text); line-height:1.6;
+      background: radial-gradient(1200px 600px at 80% -10%, rgba(14,165,233,.2), transparent 60%),
+                  radial-gradient(800px 400px at 10% 110%, rgba(34,197,94,.18), transparent 50%), var(--bg);
+    }
+    a{color:var(--brand);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .container{width:100%;max-width:1100px;margin:0 auto;padding:0 20px}
+
+    header{position:sticky;top:0;background:rgba(16,24,40,.7);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.06);z-index:40}
+    .nav{display:flex;align-items:center;justify-content:space-between;height:64px;gap:12px}
+    .logo{display:inline-flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.3px}
+    .logo-badge{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--brand),#38bdf8);display:grid;place-items:center;font-weight:800}
+
+    nav ul{display:flex;gap:18px;list-style:none;margin:0;padding:0}
+    .nav a{color:var(--text);opacity:.9}.nav a:hover{opacity:1}
+    .menu-btn{display:none;background:none;border:1px solid rgba(255,255,255,.15);color:var(--text);padding:8px 12px;border-radius:10px}
+
+    /* Right-side utilities: clock & theme toggle */
+    .utils{display:flex;align-items:center;gap:10px}
+    .clock{font-variant-numeric:tabular-nums; font-weight:600; padding:6px 10px; border:1px solid rgba(255,255,255,.12); border-radius:10px; background:rgba(255,255,255,.04)}
+    .theme-toggle{padding:6px 10px;border-radius:10px;border:1px solid rgba(255,255,255,.15); background:#152238; color:var(--text)}
+
+    .hero{padding:80px 0 30px;text-align:center}
+    .eyebrow{display:inline-block;padding:6px 10px;border:1px solid rgba(255,255,255,.12);border-radius:999px;font-size:12px;color:var(--muted);letter-spacing:.3px}
+    h1{font-size:clamp(32px,6vw,56px);line-height:1.05;margin:14px 0}
+    .lead{font-size:clamp(16px,2.2vw,20px);color:var(--muted);max-width:800px;margin:0 auto 26px}
+    .cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+    .btn{padding:12px 18px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:#152238;color:var(--text);font-weight:600}
+    .btn.primary{background:linear-gradient(135deg,var(--brand),#38bdf8);border-color:transparent;color:#04121c}
+    .btn.primary:hover{filter:brightness(1.05)}
+    .btn.ghost:hover{border-color:rgba(255,255,255,.24)}
+
+    /* Feature cards */
+    .features{padding:30px 0 10px}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02)); border:1px solid rgba(255,255,255,.06);border-radius:18px;padding:18px}
+    .card h3{margin:8px 0 6px}
+
+    /* Game section */
+    .game{padding:30px 0}
+    .game-wrap{display:grid;grid-template-columns:1fr;gap:16px}
+    .board{ background:#0a0f1a;border:1px solid rgba(255,255,255,.08);border-radius:18px;position:relative; aspect-ratio:16/9;display:grid;place-items:center;overflow:hidden }
+    canvas{width:100%;height:100%}
+    .hud{ display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap }
+    .pill{padding:8px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.03)}
+    .start-btn{padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:linear-gradient(135deg,var(--accent),#6ee7b7);color:#052012;font-weight:800}
+    .start-btn:hover{filter:brightness(1.05)}
+    .tiny{color:var(--muted);font-size:13px;text-align:center}
+
+    /* Clicker section */
+    .clicker{padding:10px 0 30px}
+    .clicker-wrap{display:grid;grid-template-columns:1fr;gap:14px;max-width:720px;margin:0 auto}
+    .clicker-card{background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:20px;display:grid;gap:14px;place-items:center;text-align:center}
+    .clicker-stats{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+    .clicker-btn{
+      cursor:pointer; border:0; padding:18px 26px; border-radius:16px; font-weight:900; font-size:18px; letter-spacing:.4px;
+      color:#04121c; background:radial-gradient(120% 160% at 50% 20%, #6ee7b7, #22c55e 60%, #16a34a);
+      box-shadow:0 10px 24px rgba(34,197,94,.35), inset 0 1px 0 rgba(255,255,255,.6);
+      transform:translateY(0); transition:transform .06s ease, filter .2s ease;
+    }
+    .clicker-btn:active{transform:translateY(2px)}
+    .reset-btn{background:#152238;color:var(--text);border:1px solid rgba(255,255,255,.12);padding:10px 14px;border-radius:12px}
+
+    footer{border-top:1px solid rgba(255,255,255,.08);padding:18px 0;color:var(--muted)}
+
+    @media (max-width:900px){.grid{grid-template-columns:1fr}}
+    @media (max-width:720px){nav ul{display:none}.menu-btn{display:block}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <a class="logo" href="#top" aria-label="Go to top">
+        <span class="logo-badge">Y</span><span>Your Brand</span>
+      </a>
+      <button class="menu-btn" aria-controls="menu" aria-expanded="false" id="menuBtn">Menu</button>
+      <nav id="menu" aria-label="Main">
+        <ul>
+          <li><a href="#game">Game</a></li>
+          <li><a href="#clicker">Clicker</a></li>
+          <li><a href="#features">Why</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="https://github.com" target="_blank" rel="noreferrer">GitHub</a></li>
+        </ul>
+      </nav>
+      <div class="utils">
+        <span class="clock" id="clock" aria-live="polite" title="Your local time">--:--:--</span>
+        <button class="theme-toggle" id="themeToggle" aria-pressed="false" title="Toggle background glow">Glow</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero container">
+      <span class="eyebrow">Built-in fun</span>
+      <h1>Play a tiny game on a beautiful site</h1>
+      <p class="lead">Clean, responsive design with a super simple reflex game you can beat between classes—plus a shiny clicker and live clock.</p>
+      <div class="cta-row">
+        <a class="btn primary" href="#game">Play now</a>
+        <a class="btn ghost" href="#clicker">Try the clicker</a>
+        <a class="btn ghost" href="#features">See features</a>
+      </div>
+    </section>
+
+    <!-- GAME -->
+    <section id="game" class="game container">
+      <div class="game-wrap">
+        <div class="board">
+          <canvas id="gameCanvas" width="640" height="360" aria-label="Dodge game board"></canvas>
+        </div>
+        <div class="hud">
+          <span class="pill">Score: <strong id="score">0</strong></span>
+          <span class="pill">Best: <strong id="best">0</strong></span>
+          <button class="start-btn" id="startBtn">Start / Restart</button>
+          <span class="pill" title="Press P to pause/resume">Pause: <strong id="pauseState">No</strong></span>
+        </div>
+        <p class="tiny">
+          Controls: <strong>A / ←</strong> and <strong>D / →</strong> to move. You can also drag/touch inside the board. Press <strong>P</strong> to pause.
+        </p>
+      </div>
+    </section>
+
+    <!-- CLICKER -->
+    <section id="clicker" class="clicker container" aria-labelledby="clickerTitle">
+      <div class="clicker-wrap">
+        <div class="clicker-card">
+          <h2 id="clickerTitle" style="margin:0">Satisfying Clicker</h2>
+          <p class="lead" style="margin:0">Click the button and chase a new personal best. Your total and best CPS are saved locally.</p>
+          <div class="clicker-stats">
+            <span class="pill">Total clicks: <strong id="clickTotal">0</strong></span>
+            <span class="pill">Best CPS (3s): <strong id="clickBest">0</strong></span>
+            <span class="pill">Current CPS: <strong id="clickCps">0</strong></span>
+          </div>
+          <button class="clicker-btn" id="clickBtn" aria-pressed="false">CLICK</button>
+          <div class="tiny">Tip: hold <strong>Space</strong> to turbo-click (auto mode).</div>
+          <div>
+            <button class="reset-btn" id="clickReset">Reset stats</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section id="features" class="features container">
+      <div class="grid">
+        <div class="card">
+          <h3>Fast & responsive</h3>
+          <p>Looks sharp on phones, tablets, and desktops. No frameworks required.</p>
+        </div>
+        <div class="card">
+          <h3>Accessible</h3>
+          <p>Semantic HTML, keyboard controls, ARIA labels, and high contrast for readability.</p>
+        </div>
+        <div class="card">
+          <h3>Shareable</h3>
+          <p>Drop this on GitHub Pages and share with friends in seconds.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT (kept simple) -->
+    <section id="contact" class="container" style="padding:30px 0 60px;">
+      <h2 style="text-align:center;margin:0 0 12px;">Contact</h2>
+      <p class="lead" style="text-align:center;margin-bottom:18px;">Questions or ideas for the game? Ping me.</p>
+      <form name="contact" onsubmit="alert('Thanks! This demo just shows an alert.'); return false;" aria-label="Contact form" style="display:grid;gap:12px;max-width:520px;margin:0 auto;">
+        <label><span class="sr">Name</span><input name="name" placeholder="Your name" required /></label>
+        <label><span class="sr">Email</span><input name="email" type="email" placeholder="you@example.com" required /></label>
+        <label><span class="sr">Message</span><textarea name="message" rows="4" placeholder="How can we help?" required></textarea></label>
+        <button class="btn primary" type="submit">Send message</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container" style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">
+      <small>© <span id="year"></span> Your Brand. All rights reserved.</small>
+      <small><a href="#top">Back to top ↑</a></small>
+    </div>
+  </footer>
+
+  <script>
+  (function(){
+    'use strict';
+
+    // ========= Utilities =========
+    const $ = sel => document.querySelector(sel);
+    const $$ = sel => document.querySelectorAll(sel);
+
+    // Current year
+    $('#year').textContent = new Date().getFullYear();
+
+    // Smooth scroll for anchors
+    $$('a[href^="#"]').forEach(a => a.addEventListener('click', e => {
+      const id = a.getAttribute('href').slice(1);
+      const el = document.getElementById(id);
+      if (el){ e.preventDefault(); el.scrollIntoView({behavior:'smooth'}); }
+    }));
+
+    // Mobile menu
+    const btn = $('#menuBtn');
+    const menu = $('#menu');
+    btn?.addEventListener('click', () => {
+      const open = menu.style.display === 'block';
+      menu.style.display = open ? 'none' : 'block';
+      btn.setAttribute('aria-expanded', String(!open));
+    });
+
+    // Theme glow toggle (pure cosmetic)
+    const themeToggle = $('#themeToggle');
+    themeToggle.addEventListener('click', () => {
+      const on = document.body.dataset.glow !== 'off';
+      if(on){ document.body.dataset.glow = 'off'; themeToggle.setAttribute('aria-pressed','true'); }
+      else { delete document.body.dataset.glow; themeToggle.setAttribute('aria-pressed','false'); }
+    });
+
+    // ========= Live Clock =========
+    const clockEl = $('#clock');
+    function updateClock(){
+      const now = new Date();
+      // Example: Fri • Aug 29 • 03:15:42 PM
+      const parts = new Intl.DateTimeFormat(undefined, {
+        weekday:'short', month:'short', day:'2-digit'
+      }).format(now);
+      const time = new Intl.DateTimeFormat(undefined, {
+        hour:'2-digit', minute:'2-digit', second:'2-digit'
+      }).format(now);
+      clockEl.textContent = `${parts} • ${time}`;
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+
+    // ========= GAME: Dodge! =========
+    const canvas = /** @type {HTMLCanvasElement} */ (document.getElementById('gameCanvas'));
+    const ctx = canvas.getContext('2d');
+    const scoreEl = $('#score');
+    const bestEl  = $('#best');
+    const startBtn = $('#startBtn');
+    const pauseStateEl = $('#pauseState');
+
+    // Device-pixel-ratio crispness
+    const BASE_W = 640, BASE_H = 360;
+    function setupCanvas(){
+      const dpr = Math.max(1, Math.min(window.devicePixelRatio || 1, 2));
+      canvas.style.width = '100%';
+      canvas.style.height = '100%';
+      canvas.width = BASE_W * dpr;
+      canvas.height = BASE_H * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0); // scale drawing space
+    }
+    setupCanvas();
+    window.addEventListener('resize', setupCanvas);
+
+    let player, obstacles, keys, running, paused, lastTime, spawnTimer, score, best;
+    best = Number(localStorage.getItem('dodge_best') || 0);
+    bestEl.textContent = best;
+
+    function resetGame(){
+      player = { x: 80, y: BASE_H - 50, r: 12, speed: 240 };
+      obstacles = []; // {x,y,w,h,vx}
+      keys = { left:false, right:false };
+      running = false; paused = false; lastTime = 0; spawnTimer = 0; score = 0;
+      scoreEl.textContent = '0'; pauseStateEl.textContent = 'No';
+      drawSplash();
+    }
+
+    function drawSplash(){
+      ctx.clearRect(0,0,BASE_W,BASE_H);
+      ctx.fillStyle = '#0a0f1a';
+      ctx.fillRect(0,0,BASE_W,BASE_H);
+      ctx.fillStyle = 'rgba(255,255,255,.05)';
+      for(let i=0;i<7;i++){
+        ctx.beginPath();
+        ctx.arc(Math.random()*BASE_W, Math.random()*BASE_H, 60+Math.random()*120, 0, Math.PI*2);
+        ctx.fill();
+      }
+      ctx.fillStyle = '#e5e7eb';
+      ctx.font = '700 28px ui-sans-serif';
+      ctx.fillText('Dodge!', 24, 40);
+      ctx.font = '16px ui-sans-serif';
+      ctx.fillStyle = '#9aa4b2';
+      ctx.fillText('Press Start, then use ←/→ or A/D. Drag/touch also works. Press P to pause.', 24, 66);
+      drawPlayer();
+    }
+
+    function drawPlayer(){
+      ctx.fillStyle = '#38bdf8';
+      ctx.beginPath();
+      ctx.arc(player.x, player.y, player.r, 0, Math.PI*2);
+      ctx.fill();
+    }
+
+    function spawnObstacle(){
+      const h = 16 + Math.random()*40;
+      const y = 30 + Math.random()*(BASE_H - 80);
+      const w = 18 + Math.random()*28;
+      const vx = 120 + Math.random()*160 + score*0.2; // difficulty scales
+      obstacles.push({ x: BASE_W + w, y, w, h, vx });
+    }
+
+    function circleRectCollide(cx, cy, cr, rx, ry, rw, rh){
+      const nx = Math.max(rx, Math.min(cx, rx+rw));
+      const ny = Math.max(ry, Math.min(cy, ry+rh));
+      const dx = cx - nx, dy = cy - ny;
+      return dx*dx + dy*dy < cr*cr;
+    }
+
+    function update(dt){
+      if (paused) return;
+      // movement
+      const dir = (keys.left?-1:0) + (keys.right?1:0);
+      player.x += dir * player.speed * dt;
+      player.x = Math.max(player.r, Math.min(BASE_W - player.r, player.x));
+
+      // obstacles
+      spawnTimer += dt;
+      if (spawnTimer > Math.max(0.25, 0.9 - score*0.0015)) { spawnObstacle(); spawnTimer = 0; }
+      for (const o of obstacles){ o.x -= o.vx * dt; }
+      obstacles = obstacles.filter(o => o.x + o.w > -5);
+
+      // collisions
+      for (const o of obstacles){
+        if (circleRectCollide(player.x, player.y, player.r, o.x, o.y, o.w, o.h)){ return gameOver(); }
+      }
+
+      // score
+      score += dt * 100;
+      scoreEl.textContent = Math.floor(score);
+    }
+
+    function render(){
+      ctx.clearRect(0,0,BASE_W,BASE_H);
+      ctx.fillStyle = '#080d17';
+      ctx.fillRect(0,0,BASE_W,BASE_H);
+      ctx.fillStyle = '#22c55e';
+      obstacles.forEach(o=> ctx.fillRect(o.x, o.y, o.w, o.h));
+      drawPlayer();
+      if (paused) {
+        ctx.fillStyle = 'rgba(0,0,0,.45)';
+        ctx.fillRect(0,0,BASE_W,BASE_H);
+        ctx.fillStyle = '#e5e7eb';
+        ctx.font = '700 22px ui-sans-serif';
+        ctx.fillText('Paused', BASE_W/2 - 36, BASE_H/2);
+      }
+    }
+
+    function loop(t){
+      if (!running) return;
+      const dt = Math.min(0.033, (t - (lastTime||t)) / 1000);
+      lastTime = t;
+      update(dt);
+      render();
+      requestAnimationFrame(loop);
+    }
+
+    function start(){
+      resetGame();
+      running = true;
+      requestAnimationFrame(loop);
+    }
+
+    function gameOver(){
+      running = false;
+      best = Math.max(best, Math.floor(score));
+      localStorage.setItem('dodge_best', String(best));
+      bestEl.textContent = best;
+      ctx.fillStyle = 'rgba(0,0,0,.55)';
+      ctx.fillRect(0,0,BASE_W,BASE_H);
+      ctx.fillStyle = '#e5e7eb';
+      ctx.font = '700 28px ui-sans-serif';
+      ctx.fillText('Game Over', BASE_W/2-80, BASE_H/2-10);
+      ctx.font = '16px ui-sans-serif';
+      ctx.fillStyle = '#9aa4b2';
+      ctx.fillText('Press Start to try again', BASE_W/2-100, BASE_H/2+16);
+    }
+
+    // Inputs
+    const onKey = (e, down) => {
+      const k = e.key.toLowerCase();
+      if (k === 'arrowleft' || k === 'a') keys.left = down;
+      if (k === 'arrowright' || k === 'd') keys.right = down;
+      if (down && k === 'p') { paused = !paused; pauseStateEl.textContent = paused ? 'Yes' : 'No'; }
+      if (down && k === ' ') { // also fuels clicker turbo
+        clicker.auto = true;
+      }
+      if (!down && k === ' ') {
+        clicker.auto = false;
+      }
+    };
+    window.addEventListener('keydown', e => onKey(e, true));
+    window.addEventListener('keyup',   e => onKey(e, false));
+
+    function pointerToCanvasX(evt){
+      const rect = canvas.getBoundingClientRect();
+      const clientX = evt.touches ? evt.touches[0].clientX : evt.clientX;
+      const x = (clientX - rect.left) * (BASE_W / rect.width);
+      return Math.max(player.r, Math.min(BASE_W - player.r, x));
+    }
+    function onPointer(evt){ player.x = pointerToCanvasX(evt); }
+    canvas.addEventListener('mousemove', onPointer);
+    canvas.addEventListener('touchstart', onPointer, {passive:true});
+    canvas.addEventListener('touchmove', onPointer, {passive:true});
+    startBtn.addEventListener('click', start);
+
+    // Init
+    resetGame();
+
+    // ========= CLICKER =========
+    const clickBtn = $('#clickBtn');
+    const clickTotalEl = $('#clickTotal');
+    const clickBestEl = $('#clickBest');
+    const clickCpsEl = $('#clickCps');
+    const clickReset = $('#clickReset');
+
+    const clicker = {
+      total: Number(localStorage.getItem('clicker_total') || 0),
+      bestCps: Number(localStorage.getItem('clicker_best_cps') || 0),
+      times: [], // timestamps of recent clicks
+      auto: false, // spacebar turbo mode
+    };
+
+    function updateClickerUI(){
+      // remove times older than 3 seconds
+      const now = performance.now();
+      clicker.times = clicker.times.filter(t => now - t <= 3000);
+      const cps = (clicker.times.length / 3).toFixed(2);
+      clickCpsEl.textContent = cps;
+      if (Number(cps) > clicker.bestCps) {
+        clicker.bestCps = Number(cps);
+        localStorage.setItem('clicker_best_cps', String(clicker.bestCps));
+      }
+      clickBestEl.textContent = clicker.bestCps.toFixed(2);
+      clickTotalEl.textContent = clicker.total;
+    }
+
+    function doClick(){
+      clicker.total += 1;
+      localStorage.setItem('clicker_total', String(clicker.total));
+      clicker.times.push(performance.now());
+      // fun micro animation
+      clickBtn.style.transform = 'translateY(2px)';
+      setTimeout(()=>{ clickBtn.style.transform = ''; }, 60);
+      updateClickerUI();
+    }
+
+    clickBtn.addEventListener('click', doClick);
+    clickReset.addEventListener('click', () => {
+      clicker.total = 0; clicker.bestCps = 0; clicker.times = [];
+      localStorage.removeItem('clicker_total');
+      localStorage.removeItem('clicker_best_cps');
+      updateClickerUI();
+    });
+
+    // Auto-click loop (spacebar held)
+    function autoLoop(){
+      if (clicker.auto) doClick();
+      updateClickerUI();
+      requestAnimationFrame(autoLoop);
+    }
+    updateClickerUI();
+    autoLoop();
+
+    // ========= Accessibility helpers =========
+    // Reduce motion respect
+    const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (media.matches) { document.body.style.scrollBehavior = 'auto'; }
+  })();
+  </script>
+
+  <!-- Accessibility helpers -->
+  <style>.sr{position:absolute;left:-9999px}.sr:focus{position:static}</style>
+</body>
+</html>
