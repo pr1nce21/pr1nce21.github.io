@@ -203,6 +203,13 @@ hr{border:0;border-top:1px solid #1d2a36;margin:16px 0}
     sections.forEach(el=>el.classList.toggle('hide',el.id!==id));
     qsa('nav a').forEach(a=>a.classList.toggle('active',a.dataset.target===id));
     current=id; history.replaceState(null,'','#'+id);
+    const runEnter=()=>{ if(onEnter[current]){ try{onEnter[current]()}catch{}} };
+    requestAnimationFrame(()=>requestAnimationFrame(runEnter)); // ensure layout flushed (2 RAFs)
+    setTimeout(runEnter,60); // Safari fallback
+  }catch{}}
+    sections.forEach(el=>el.classList.toggle('hide',el.id!==id));
+    qsa('nav a').forEach(a=>a.classList.toggle('active',a.dataset.target===id));
+    current=id; history.replaceState(null,'','#'+id);
     requestAnimationFrame(()=>{ if(onEnter[current]){ try{onEnter[current]()}catch{}} });
   }
   nav.addEventListener('click',e=>{const a=e.target.closest('a[data-target]');if(a){e.preventDefault();show(a.dataset.target)}});
@@ -247,7 +254,7 @@ hr{border:0;border-top:1px solid #1d2a36;margin:16px 0}
     if(FL.pipes[0] && FL.pipes[0].x+FL.pipes[0].w<0) FL.pipes.shift(); if(flCollides()){FL.over=true; flStarted=false; flStatus.textContent='Game Over'; if(FL.score>flBestVal){flBestVal=FL.score; localStorage.setItem('fl_best',flBestVal); flBest.textContent=flBestVal;}} flDraw(); flraf=requestAnimationFrame(flStep);
   }
   function flFlap(){if(FL.over) return; if(!flStarted){flStarted=true;flPaused=false;flStatus.textContent='Playing';cancelAnimationFrame(flraf);flraf=requestAnimationFrame(flStep);} FL.bv=FL.flap}
-  onEnter['flappy']=()=>{flResize(); if(!FL.over) flDraw()};
+  onEnter['flappy']=()=>{ flResize(); flDraw(); };
   onLeave['flappy']=()=>{cancelAnimationFrame(flraf)};
   flC.addEventListener('pointerdown',e=>{e.preventDefault();flFlap()});
   document.addEventListener('keydown',e=>{if(current!=='flappy') return; if(e.key===' '){e.preventDefault();flFlap()} if(e.key==='p'||e.key==='P'){flPaused=!flPaused;flStatus.textContent=flPaused?'Paused':'Playing'; if(!flPaused){flraf=requestAnimationFrame(flStep);}} if(e.key==='r'||e.key==='R'){flReset();flDraw();flStatus.textContent='Ready';flStarted=false}});
