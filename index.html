@@ -1,197 +1,274 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Your Brand — Minimal Arcade</title>
-  <meta name="description" content="Ultra‑clean single‑file site with a tiny arcade game, live clock, and a satisfying clicker." />
-  <meta name="theme-color" content="#0ea5e9" />
-  <meta property="og:title" content="Your Brand — Minimal Arcade" />
-  <meta property="og:description" content="Play a reflex game and a clicker on a sleek one‑pager." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://example.com" />
-  <meta property="og:image" content="https://picsum.photos/1200/630" />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230ea5e9'/><text x='50' y='58' font-size='56' text-anchor='middle' fill='white' font-family='Arial,Helvetica,sans-serif'>Y</text></svg>">
-  <style>
-    :root{ --bg:#0b1220; --muted:#9aa4b2; --text:#e5e7eb; --brand:#0ea5e9; --accent:#22c55e; }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0; font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial; color:var(--text); line-height:1.6;
-      background: radial-gradient(1200px 600px at 80% -10%, rgba(14,165,233,.2), transparent 60%),
-                  radial-gradient(800px 400px at 10% 110%, rgba(34,197,94,.18), transparent 50%), #0b1220;
-    }
-    .container{width:100%;max-width:1100px;margin:0 auto;padding:0 20px}
-
-    /* Header */
-    header{position:sticky;top:0;background:rgba(16,24,40,.65);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.06);z-index:40}
-    .nav{display:flex;align-items:center;justify-content:space-between;height:64px;gap:12px}
-    .logo{display:inline-flex;align-items:center;gap:10px;font-weight:800}
-    .logo-badge{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--brand),#38bdf8);display:grid;place-items:center}
-    nav ul{display:flex;gap:16px;list-style:none;margin:0;padding:0}
-    nav a{color:var(--text);opacity:.9;text-decoration:none} nav a:hover{opacity:1}
-    .menu-btn{display:none;background:none;border:1px solid rgba(255,255,255,.15);color:var(--text);padding:8px 12px;border-radius:10px}
-    .utils{display:flex;align-items:center;gap:10px}
-    .clock{font-variant-numeric:tabular-nums;font-weight:600;padding:6px 10px;border:1px solid rgba(255,255,255,.12);border-radius:10px;background:rgba(255,255,255,.04)}
-
-    /* Hero minimal */
-    .hero{padding:60px 0 24px;text-align:center}
-    h1{font-size:clamp(30px,6vw,50px);line-height:1.05;margin:10px 0}
-    .lead{font-size:clamp(15px,2.2vw,18px);color:var(--muted);max-width:760px;margin:0 auto 18px}
-
-    /* Sections */
-    section{scroll-margin-top:72px}
-
-    /* Board & HUD */
-    .game{padding:6px 0 24px}
-    .board{background:#0a0f1a;border:1px solid rgba(255,255,255,.08);border-radius:18px;aspect-ratio:16/9;display:grid;place-items:center;overflow:hidden}
-    canvas{width:100%;height:100%}
-    .hud{display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;margin-top:10px}
-    .pill{padding:8px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.03)}
-    .btn{padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:linear-gradient(135deg,var(--accent),#6ee7b7);color:#052012;font-weight:800}
-
-    /* Clicker */
-    .clicker{padding:6px 0 40px}
-    .clicker-card{background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:24px;display:grid;gap:14px;place-items:center;text-align:center}
-    .clicker-stats{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
-    .clicker-btn{cursor:pointer;border:0;padding:28px 36px;border-radius:20px;font-weight:900;font-size:22px;letter-spacing:.4px;color:#04121c;background:radial-gradient(120% 160% at 50% 20%, #6ee7b7, #22c55e 60%, #16a34a);box-shadow:0 12px 26px rgba(34,197,94,.35), inset 0 1px 0 rgba(255,255,255,.6);transform:translateY(0);transition:transform .06s ease}
-    .clicker-btn:active{transform:translateY(2px)}
-    .reset-btn{background:#152238;color:var(--text);border:1px solid rgba(255,255,255,.12);padding:10px 14px;border-radius:12px}
-
-    @media (max-width:720px){nav ul{display:none}.menu-btn{display:block}}
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>OneFile Arcade — Clock, Flappy, CPS, Aim, Visualizer</title>
+<meta name="description" content="Minimal one‑file site: live clock home + Flappy Bird, CPS tester, Aim trainer, Audio visualizer." />
+<meta name="theme-color" content="#0ea5e9" />
+<style>
+:root{
+  --bg:#0b0f14; --panel:#0f151c; --fg:#e6edf3; --muted:#97a3b6; --accent:#0ea5e9; --ok:#22c55e; --warn:#f59e0b; --bad:#ef4444;
+  --card:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));
+}
+*{box-sizing:border-box}
+html,body{height:100%;}
+body{margin:0;font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;background:radial-gradient(1000px 600px at 10% -10%,#0f172a22,transparent),radial-gradient(600px 800px at 120% 10%,#0ea5e922,transparent),var(--bg);color:var(--fg);}
+header{position:sticky;top:0;z-index:10;background:rgba(11,15,20,.6);backdrop-filter:blur(8px);border-bottom:1px solid #1e2630}
+.wrap{max-width:1100px;margin:auto;padding:16px;}
+.brand{display:flex;gap:12px;align-items:center;}
+.logo{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--accent),#22d3ee);box-shadow:0 0 0 2px #0c1117,0 8px 24px -12px #0ea5e9aa}
+.brand h1{font-size:16px;font-weight:700;margin:0}
+nav{display:flex;gap:8px;flex-wrap:wrap}
+nav a{padding:8px 12px;border-radius:12px;color:var(--fg);text-decoration:none;border:1px solid #1d2a36;background:var(--card);} 
+nav a:hover{border-color:#2a3a49;background:rgba(255,255,255,.06)}
+nav a.active{border-color:var(--accent);box-shadow:0 0 0 1px #0c1117,0 0 0 9999px inset rgba(14,165,233,.06)}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:16px}
+main{padding:24px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid #1d2a36;border-radius:16px;padding:18px;box-shadow:0 12px 40px -24px #000}
+.card h2{margin:0 0 8px;font-size:18px}
+.mono{font-family:ui-monospace,Menlo,Consolas,monospace}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:12px;border:1px solid #1d2a36;background:rgba(255,255,255,.04);color:var(--fg);cursor:pointer}
+.btn:hover{border-color:#2a3a49;background:rgba(255,255,255,.08)}
+.btn.primary{border-color:var(--accent);background:linear-gradient(180deg,rgba(14,165,233,.2),rgba(14,165,233,.1))}
+.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+select,input[type="number"]{background:#0d131a;border:1px solid #1d2a36;color:var(--fg);border-radius:10px;padding:8px}
+.small{font-size:12px;color:var(--muted)}
+.center{display:grid;place-items:center}
+.clock{font-size:72px;line-height:1.05;font-weight:800;letter-spacing:1px}
+.clock .date{font-size:18px;font-weight:500;color:var(--muted)}
+.hero{min-height:52vh;display:grid;place-items:center}
+.kbd{font:12px ui-monospace,monospace;padding:2px 6px;border-radius:8px;border:1px solid #243041;background:#0c1218;color:#b8c1cc}
+.canvas-wrap{position:relative;border-radius:16px;overflow:hidden;border:1px solid #1d2a36;background:#0c1117}
+canvas{display:block;width:100%;height:auto;background:transparent}
+.stat{display:flex;gap:14px;flex-wrap:wrap}
+.stat div{padding:8px 12px;border-radius:10px;border:1px solid #1d2a36;background:rgba(255,255,255,.03)}
+footer{padding:24px;color:#8292a6;border-top:1px solid #1d2a36}
+.hide{display:none!important}
+.link{color:var(--accent);text-decoration:none}
+hr{border:0;border-top:1px solid #1d2a36;margin:16px 0}
+@media (max-width:520px){.clock{font-size:44px}.topbar{flex-direction:column;align-items:flex-start}}
+</style>
 </head>
 <body>
-  <header>
-    <div class="container nav">
-      <a class="logo" href="#top" aria-label="Go to top"><span class="logo-badge">Y</span><span>Your Brand</span></a>
-      <button class="menu-btn" aria-controls="menu" aria-expanded="false" id="menuBtn">Menu</button>
-      <nav id="menu" aria-label="Main">
-        <ul>
-          <li><a href="#game">Game</a></li>
-          <li><a href="#clicker">Clicker</a></li>
-        </ul>
-      </nav>
-      <div class="utils"><span class="clock" id="clock" aria-live="polite" title="Your local time">--:--:--</span></div>
+<header>
+  <div class="wrap topbar">
+    <div class="brand"><div class="logo"></div><h1>OneFile Arcade</h1></div>
+    <nav id="nav">
+      <a href="#home" data-target="home" class="active">Home</a>
+      <a href="#flappy" data-target="flappy">Flappy</a>
+      <a href="#cps" data-target="cps">CPS</a>
+      <a href="#aim" data-target="aim">Aim</a>
+      <a href="#audio" data-target="audio">Visualizer</a>
+    </nav>
+  </div>
+</header>
+<main class="wrap">
+  <section id="home" class="section">
+    <div class="hero card center">
+      <div class="center" style="text-align:center;padding:24px 12px">
+        <div class="clock" id="clock"></div>
+        <div class="date" id="date"></div>
+        <div class="small" style="margin-top:12px">Quick keys: <span class="kbd">P</span> pause, <span class="kbd">R</span> restart, <span class="kbd">Space/Click</span> flap, <span class="kbd">Enter</span> start tests.</div>
+      </div>
     </div>
-  </header>
-
-  <main id="top">
-    <section class="hero container">
-      <h1>Minimal Arcade</h1>
-      <p class="lead">Sleek one‑pager. Move with <strong>W/A/S/D</strong> or arrows. Pause <strong>P</strong>, restart <strong>R</strong>. Clicker turbo is <strong>E</strong>.</p>
-    </section>
-
-    <!-- GAME -->
-    <section id="game" class="game container">
-      <div class="board"><canvas id="gameCanvas" width="640" height="360" aria-label="Dodge game board"></canvas></div>
-      <div class="hud">
-        <span class="pill">Score: <strong id="score">0</strong></span>
-        <span class="pill">Best: <strong id="best">0</strong></span>
-        <button class="btn" id="startBtn">Start</button>
-        <span class="pill">Paused: <strong id="pauseState">No</strong></span>
-        <span class="pill" title="Controls">W/A/S/D • P • R</span>
+    <div class="grid">
+      <div class="card">
+        <h2>Flappy Bird</h2>
+        <p class="small">A crisp canvas remake. Tap or press <span class="kbd">Space</span> to fly. Avoid pipes, chase your PB.</p>
+        <button class="btn" data-go="flappy">Play Flappy</button>
       </div>
-    </section>
+      <div class="card">
+        <h2>CPS Tester</h2>
+        <p class="small">Clicks per second over a timed window. Clean, accurate, stores highs.</p>
+        <button class="btn" data-go="cps">Start CPS</button>
+      </div>
+      <div class="card">
+        <h2>Aim Trainer</h2>
+        <p class="small">Hit 30 targets quickly. Tracks average time and accuracy.</p>
+        <button class="btn" data-go="aim">Train Aim</button>
+      </div>
+      <div class="card">
+        <h2>Audio Visualizer</h2>
+        <p class="small">Live mic spectrum bars via Web Audio API.</p>
+        <button class="btn" data-go="audio">Open Visualizer</button>
+      </div>
+    </div>
+  </section>
 
-    <!-- CLICKER -->
-    <section id="clicker" class="clicker container" aria-labelledby="clickerTitle">
-      <div class="clicker-card" id="clickerCard">
-        <h2 id="clickerTitle" style="margin:0">Satisfying Clicker</h2>
-        <div class="clicker-stats">
-          <span class="pill">Total: <strong id="clickTotal">0</strong></span>
-          <span class="pill">Best CPS (3s): <strong id="clickBest">0</strong></span>
-          <span class="pill">Current CPS: <strong id="clickCps">0</strong></span>
+  <section id="flappy" class="section hide">
+    <div class="card">
+      <div class="controls" style="justify-content:space-between">
+        <div class="stat">
+          <div>Score: <b id="fl-score">0</b></div>
+          <div>Best: <b id="fl-best">0</b></div>
+          <div>Status: <b id="fl-status">Ready</b></div>
         </div>
-        <button class="clicker-btn" id="clickBtn" aria-pressed="false" aria-describedby="clickHint">CLICK</button>
-        <div id="clickHint" class="lead" style="font-size:14px;color:var(--muted)">Press <strong>E</strong> to auto‑click. Click anywhere on this card.</div>
-        <button class="reset-btn" id="clickReset">Reset stats</button>
+        <div class="controls">
+          <button class="btn primary" id="fl-start">Start</button>
+          <button class="btn" id="fl-restart">Restart</button>
+          <button class="btn" id="fl-back">Back</button>
+        </div>
       </div>
-    </section>
-  </main>
+      <div class="canvas-wrap" style="margin-top:12px">
+        <canvas id="fl-c" width="960" height="540"></canvas>
+      </div>
+      <div class="small" style="margin-top:8px">Controls: <span class="kbd">Click</span>/<span class="kbd">Space</span> to flap • <span class="kbd">P</span> pause • <span class="kbd">R</span> restart</div>
+    </div>
+  </section>
 
-  <script>
-  (function(){
-    'use strict';
-    const $ = s => document.querySelector(s); const $$ = s => document.querySelectorAll(s);
+  <section id="cps" class="section hide">
+    <div class="card">
+      <div class="controls" style="justify-content:space-between">
+        <div class="stat">
+          <div>Duration: 
+            <select id="cps-duration">
+              <option value="5">5s</option>
+              <option value="10">10s</option>
+              <option value="1">1s</option>
+              <option value="15">15s</option>
+            </select>
+          </div>
+          <div>Clicks: <b id="cps-clicks">0</b></div>
+          <div>Time: <b id="cps-time">0.00</b>s</div>
+          <div>CPS: <b id="cps-rate">0.00</b></div>
+          <div>Best: <b id="cps-best">0.00</b></div>
+        </div>
+        <div class="controls">
+          <button class="btn primary" id="cps-start">Start</button>
+          <button class="btn" id="cps-reset">Reset</button>
+          <button class="btn" id="cps-back">Back</button>
+        </div>
+      </div>
+      <div id="cps-area" class="center" style="margin-top:12px;height:320px;border-radius:16px;border:1px dashed #203042;background:repeating-linear-gradient(45deg,#0b1016,#0b1016 8px,#0d1219 8px,#0d1219 16px);cursor:crosshair">
+        <div class="small">Press <b>Start</b> or <span class="kbd">Enter</span>, then click as fast as you can here.</div>
+      </div>
+    </div>
+  </section>
 
-    // Yearless minimal, live clock only
-    const clockEl = $('#clock');
-    const fmtDate = new Intl.DateTimeFormat(undefined,{weekday:'short',month:'short',day:'2-digit'});
-    const fmtTime = new Intl.DateTimeFormat(undefined,{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-    function tick(){ const n=new Date(); clockEl.textContent = `${fmtDate.format(n)} • ${fmtTime.format(n)}`; }
-    tick(); setInterval(tick,1000);
+  <section id="aim" class="section hide">
+    <div class="card">
+      <div class="controls" style="justify-content:space-between">
+        <div class="stat">
+          <div>Targets: <b id="aim-left">30</b></div>
+          <div>Avg ms: <b id="aim-avg">0</b></div>
+          <div>Best avg: <b id="aim-best">—</b></div>
+          <div>Acc: <b id="aim-acc">100%</b></div>
+        </div>
+        <div class="controls">
+          <button class="btn primary" id="aim-start">Start</button>
+          <button class="btn" id="aim-reset">Reset</button>
+          <button class="btn" id="aim-back">Back</button>
+        </div>
+      </div>
+      <div class="canvas-wrap" style="margin-top:12px">
+        <canvas id="aim-c" width="960" height="540"></canvas>
+      </div>
+      <div class="small" style="margin-top:8px">Click the circle as soon as it appears. 30 targets total.</div>
+    </div>
+  </section>
 
-    // Smooth scroll
-    $$('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const id=a.getAttribute('href').slice(1); const el=document.getElementById(id); if(el){e.preventDefault(); el.scrollIntoView({behavior:'smooth'});} }));
-    // Mobile menu
-    const btn=$('#menuBtn'), menu=$('#menu'); btn?.addEventListener('click',()=>{const open=menu.style.display==='block'; menu.style.display=open?'none':'block'; btn.setAttribute('aria-expanded',String(!open));});
+  <section id="audio" class="section hide">
+    <div class="card">
+      <div class="controls" style="justify-content:space-between">
+        <div class="stat"><div>Mic: <b id="au-status">Idle</b></div></div>
+        <div class="controls">
+          <button class="btn primary" id="au-start">Start Mic</button>
+          <button class="btn" id="au-stop">Stop</button>
+          <button class="btn" id="au-back">Back</button>
+        </div>
+      </div>
+      <div class="canvas-wrap" style="margin-top:12px">
+        <canvas id="au-c" width="960" height="360"></canvas>
+      </div>
+      <div class="small" style="margin-top:8px">Your browser will ask for microphone permission.</div>
+    </div>
+  </section>
+</main>
+<footer class="wrap small">© <span id="year"></span> OneFile Arcade • Built as a single HTML file. No cookies, just <code class="kbd">localStorage</code> for bests. <a class="link" href="#home" data-target="home">Home</a></footer>
+<script>
+(()=>{
+  const qs=s=>document.querySelector(s),qsa=s=>[...document.querySelectorAll(s)];
+  const sections=qsa('.section');
+  const nav=qs('#nav');
+  function show(id){sections.forEach(el=>el.classList.toggle('hide',el.id!==id));qsa('nav a').forEach(a=>a.classList.toggle('active',a.dataset.target===id));history.replaceState(null,'','#'+id)}
+  nav.addEventListener('click',e=>{const a=e.target.closest('a[data-target]');if(a){e.preventDefault();show(a.dataset.target)}});
+  qsa('[data-go]').forEach(b=>b.onclick=()=>show(b.dataset.go));
+  window.addEventListener('hashchange',()=>{const id=location.hash.slice(1)||'home';show(id)});
+  show(location.hash.slice(1)||'home');
+  qs('#year').textContent=new Date().getFullYear();
+  // Clock
+  const clockEl=qs('#clock'),dateEl=qs('#date');
+  function pad(n){return n.toString().padStart(2,'0')}
+  function fmt(){const d=new Date();const h=pad(d.getHours()),m=pad(d.getMinutes()),s=pad(d.getSeconds());const ds=d.toLocaleDateString(undefined,{weekday:'long',year:'numeric',month:'long',day:'numeric'});clockEl.innerHTML=`${h}:${m}:${s}`;dateEl.textContent=ds}
+  fmt();setInterval(fmt,500);
 
-    // ======== GAME: Dodge! (now 2D movement) ========
-    const canvas = /** @type {HTMLCanvasElement} */ (document.getElementById('gameCanvas'));
-    const ctx = canvas.getContext('2d');
-    const scoreEl=$('#score'), bestEl=$('#best'), startBtn=$('#startBtn'), pauseStateEl=$('#pauseState');
+  // ------- Flappy Bird -------
+  const flC=qs('#fl-c'),flScore=qs('#fl-score'),flBest=qs('#fl-best'),flStatus=qs('#fl-status');
+  let flCtx=flC.getContext('2d'),flraf,flStarted=false,flPaused=false,flG,flBestVal=+localStorage.getItem('fl_best')||0;flBest.textContent=flBestVal;
+  function flReset(){const W=flC.width,H=flC.height;flG={t:0,bx:W*0.25,by:H*0.5,bv:0,br:12,g:140,flap:-5.4, pipes:[],gap:140,spd:2.1,score:0,over:false};flSpawnPipe(true);flScore.textContent='0';flStatus.textContent='Ready'}
+  function flSpawnPipe(seed){const W=flC.width,H=flC.height;const gap=flG.gap;const min=60;const top=min+Math.random()*(H-2*min-gap);flG.pipes.push({x:W+(seed?0:0),w:64,top:top,bottom:top+gap,scored:false});}
+  function flCollides(){const b=flG;const x=b.bx,y=b.by,r=b.br; if(y-r<0||y+r>flC.height) return true; for(const p of b.pipes){if(b.bx+r>p.x&&b.bx-r<p.x+p.w){if(y-r<p.top||y+r>p.bottom)return true;}}return false}
+  function flDraw(){const ctx=flCtx,W=flC.width,H=flC.height;ctx.clearRect(0,0,W,H);const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#0b1220');g.addColorStop(1,'#081018');ctx.fillStyle=g;ctx.fillRect(0,0,W,H); // ground line
+    // pipes
+    for(const p of flG.pipes){ctx.fillStyle='#0ea5e9';ctx.fillRect(p.x,0,p.w,p.top);ctx.fillRect(p.x,p.bottom,p.w,H-p.bottom);}
+    // bird
+    ctx.save();ctx.translate(flG.bx,flG.by);ctx.rotate(Math.max(-0.5,Math.min(0.7,flG.bv*0.06)));
+    ctx.fillStyle='#ffd166';ctx.beginPath();ctx.arc(0,0,flG.br,0,Math.PI*2);ctx.fill();ctx.fillStyle='#333';ctx.fillRect(flG.br*0.2,-3,flG.br*0.8,6);ctx.restore();
+    // score
+    ctx.fillStyle='rgba(255,255,255,.8)';ctx.font='bold 28px ui-monospace,monospace';ctx.textAlign='center';ctx.fillText(flG.score, W/2, 48);
+    if(flG.over){ctx.font='16px ui-monospace,monospace';ctx.textAlign='center';ctx.fillStyle='#97a3b6';ctx.fillText('Press R to restart',W/2,H/2+36)}
+  }
+  function flStep(){if(!flStarted||flPaused)return; const b=flG; b.t++; if(b.t%140===0) flSpawnPipe(); // physics
+    b.bv+=0.28; b.by+=b.bv; for(const p of b.pipes){p.x-=b.spd; if(!p.scored && p.x+p.w<b.bx){p.scored=true; b.score++; flScore.textContent=b.score;}}
+    // cleanup
+    if(b.pipes[0] && b.pipes[0].x+b.pipes[0].w<0) b.pipes.shift();
+    if(flCollides()){b.over=true; flStarted=false; flStatus.textContent='Game Over'; if(b.score>flBestVal){flBestVal=b.score; localStorage.setItem('fl_best',flBestVal); flBest.textContent=flBestVal;} }
+    flDraw(); flraf=requestAnimationFrame(flStep);
+  }
+  function flResize(){const rect=flC.getBoundingClientRect();const ratio=window.devicePixelRatio||1;flC.width=Math.round(rect.width*ratio);flC.height=Math.round(rect.height*ratio);flCtx.setTransform(ratio,0,0,ratio,0,0);}
+  new ResizeObserver(flResize).observe(flC);flResize();flReset();flDraw();
+  function flFlap(){if(flG.over){return} if(!flStarted){flStarted=true;flPaused=false;flStatus.textContent='Playing';cancelAnimationFrame(flraf);flraf=requestAnimationFrame(flStep);} flG.bv=flG.flap}
+  flC.addEventListener('pointerdown',flFlap);
+  document.addEventListener('keydown',e=>{if(sections.find(s=>!s.classList.contains('hide') && s.id==='flappy')){if(e.key===' '){e.preventDefault();flFlap()} if(e.key==='p'||e.key==='P'){flPaused=!flPaused;flStatus.textContent=flPaused?'Paused':'Playing'; if(!flPaused){flraf=requestAnimationFrame(flStep);}} if(e.key==='r'||e.key==='R'){flReset();flDraw();flStatus.textContent='Ready';flStarted=false}}});
+  qs('#fl-start').onclick=()=>{if(flG.over) flReset();flStarted=true;flPaused=false;flStatus.textContent='Playing';flraf=requestAnimationFrame(flStep)};
+  qs('#fl-restart').onclick=()=>{flReset();flDraw();flStarted=false};
+  qs('#fl-back').onclick=()=>show('home');
 
-    const BASE_W=640, BASE_H=360; function setupCanvas(){ const dpr=Math.max(1,Math.min(window.devicePixelRatio||1,2)); canvas.style.width='100%'; canvas.style.height='100%'; canvas.width=BASE_W*dpr; canvas.height=BASE_H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0);} setupCanvas(); window.addEventListener('resize',setupCanvas);
+  // ------- CPS Tester -------
+  const cpsArea=qs('#cps-area'),cpsClicks=qs('#cps-clicks'),cpsTime=qs('#cps-time'),cpsRate=qs('#cps-rate'),cpsBest=qs('#cps-best'),cpsDuration=qs('#cps-duration');
+  let cpsRunning=false,cpsStart=0,cpsCount=0,cpsTimer=null,cpsBestVal=+localStorage.getItem('cps_best')||0; cpsBest.textContent=cpsBestVal.toFixed(2);
+  function cpsUpdate(){const t=(performance.now()-cpsStart)/1000;const dur=+cpsDuration.value;const clamped=Math.min(t,dur);cpsTime.textContent=clamped.toFixed(2);const cps=clamped>0?cpsCount/clamped:0;cpsRate.textContent=cps.toFixed(2); if(t>=dur){cpsStop();}}
+  function cpsStartRun(){if(cpsRunning) return; cpsRunning=true;cpsCount=0;cpsClicks.textContent='0';cpsStart=performance.now();cpsTimer=setInterval(cpsUpdate,25);cpsArea.classList.add('active');cpsArea.style.outline='2px solid var(--accent)'}
+  function cpsStop(){if(!cpsRunning) return; clearInterval(cpsTimer);cpsRunning=false;cpsArea.classList.remove('active');cpsArea.style.outline='none'; const t=parseFloat(cpsTime.textContent)||0; const cps=t>0?cpsCount/t:0; if(cps>cpsBestVal){cpsBestVal=cps;localStorage.setItem('cps_best',cpsBestVal);cpsBest.textContent=cpsBestVal.toFixed(2);} }
+  cpsArea.addEventListener('click',()=>{if(!cpsRunning) return; cpsCount++; cpsClicks.textContent=cpsCount});
+  document.addEventListener('keydown',e=>{if(sections.find(s=>!s.classList.contains('hide') && s.id==='cps')){if(e.key==='Enter'){cpsStartRun()} if(e.key==='r'||e.key==='R'){cpsStop();cpsTime.textContent='0.00';cpsRate.textContent='0.00';cpsClicks.textContent='0'} }});
+  qs('#cps-start').onclick=cpsStartRun; qs('#cps-reset').onclick=()=>{cpsStop();cpsTime.textContent='0.00';cpsRate.textContent='0.00';cpsClicks.textContent='0'}; qs('#cps-back').onclick=()=>show('home');
 
-    let player, obstacles, keys, running, paused, lastTime, spawnTimer, score, best;
-    best=Number(localStorage.getItem('dodge_best')||0); bestEl.textContent=best;
+  // ------- Aim Trainer -------
+  const aimC=qs('#aim-c'),aimCtx=aimC.getContext('2d'),aimLeft=qs('#aim-left'),aimAvg=qs('#aim-avg'),aimBest=qs('#aim-best'),aimAcc=qs('#aim-acc');
+  let aimRun=false,aimTargets=30,aimRemaining=aimTargets,aimR=18,aimPos=null,aimStartT=0,aimTimes=[],aimClicks=0,aimHits=0,aimBestAvg=+localStorage.getItem('aim_best_avg')||0; aimBest.textContent=aimBestAvg?aimBestAvg.toFixed(0):'—';
+  function aimResize(){const rect=aimC.getBoundingClientRect();const ratio=window.devicePixelRatio||1;aimC.width=Math.round(rect.width*ratio);aimC.height=Math.round(rect.height*ratio);aimCtx.setTransform(ratio,0,0,ratio,0,0); aimDrawBG();}
+  new ResizeObserver(aimResize).observe(aimC); aimResize();
+  function aimDrawBG(){const W=aimC.width,H=aimC.height;aimCtx.clearRect(0,0,W,H);const g=aimCtx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#0b1220');g.addColorStop(1,'#081018');aimCtx.fillStyle=g;aimCtx.fillRect(0,0,W,H); if(aimPos){aimCtx.fillStyle='#22d3ee';aimCtx.beginPath();aimCtx.arc(aimPos.x,aimPos.y,aimR,0,Math.PI*2);aimCtx.fill();aimCtx.fillStyle='#0b1220';aimCtx.beginPath();aimCtx.arc(aimPos.x,aimPos.y,aimR*0.5,0,Math.PI*2);aimCtx.fill();}}
+  function aimSpawn(){const W=aimC.width,H=aimC.height;const pad=aimR+8;aimPos={x:pad+Math.random()*(W-pad*2),y:pad+Math.random()*(H-pad*2)};aimStartT=performance.now();aimDrawBG();}
+  function aimStart(){aimRun=true;aimTimes=[];aimClicks=0;aimHits=0;aimRemaining=aimTargets;aimLeft.textContent=aimRemaining;aimAvg.textContent='0';aimAcc.textContent='100%';aimSpawn();}
+  function aimStop(){aimRun=false;aimPos=null;aimDrawBG(); if(aimTimes.length){const avg=aimTimes.reduce((a,b)=>a+b,0)/aimTimes.length;aimAvg.textContent=avg.toFixed(0);const acc=aimClicks?Math.round(aimHits/aimClicks*100):100;aimAcc.textContent=acc+'%'; if(!aimBestAvg||avg<aimBestAvg){aimBestAvg=avg;localStorage.setItem('aim_best_avg',aimBestAvg);aimBest.textContent=avg.toFixed(0);} }}
+  aimC.addEventListener('pointerdown',e=>{const rect=aimC.getBoundingClientRect();const x=(e.clientX-rect.left)*(aimC.width/rect.width);const y=(e.clientY-rect.top)*(aimC.height/rect.height);aimClicks++; if(!aimRun||!aimPos) return; const dx=x-aimPos.x,dy=y-aimPos.y;if(Math.hypot(dx,dy)<=aimR){aimHits++; const t=performance.now()-aimStartT;aimTimes.push(t);aimRemaining--;aimLeft.textContent=aimRemaining; if(aimRemaining>0)aimSpawn(); else aimStop();} else { // miss feedback
+      aimCtx.save();aimCtx.strokeStyle='#ef4444';aimCtx.lineWidth=2;aimCtx.beginPath();aimCtx.moveTo(x-8,y-8);aimCtx.lineTo(x+8,y+8);aimCtx.moveTo(x+8,y-8);aimCtx.lineTo(x-8,y+8);aimCtx.stroke();aimCtx.restore(); }
+  });
+  qs('#aim-start').onclick=aimStart; qs('#aim-reset').onclick=()=>{aimStop();aimAvg.textContent='0';aimLeft.textContent=aimTargets;aimAcc.textContent='100%'}; qs('#aim-back').onclick=()=>show('home');
 
-    function resetGame(){
-      player={ x:80, y:BASE_H-50, r:12, speed:240 };
-      obstacles=[]; keys={ left:false,right:false,up:false,down:false };
-      running=false; paused=false; lastTime=0; spawnTimer=0; score=0;
-      scoreEl.textContent='0'; pauseStateEl.textContent='No'; drawSplash();
-    }
-    function drawSplash(){ ctx.clearRect(0,0,BASE_W,BASE_H); ctx.fillStyle='#0a0f1a'; ctx.fillRect(0,0,BASE_W,BASE_H); ctx.fillStyle='rgba(255,255,255,.05)'; for(let i=0;i<7;i++){ ctx.beginPath(); ctx.arc(Math.random()*BASE_W,Math.random()*BASE_H,60+Math.random()*120,0,Math.PI*2); ctx.fill(); } ctx.fillStyle='#e5e7eb'; ctx.font='700 26px ui-sans-serif'; ctx.fillText('Dodge!',24,40); ctx.font='15px ui-sans-serif'; ctx.fillStyle='#9aa4b2'; ctx.fillText('W/A/S/D or Arrows. P = Pause, R = Restart.',24,64); drawPlayer(); }
-    function drawPlayer(){ ctx.fillStyle='#38bdf8'; ctx.beginPath(); ctx.arc(player.x,player.y,player.r,0,Math.PI*2); ctx.fill(); }
-
-    function spawnObstacle(){ const h=16+Math.random()*40; const y=30+Math.random()*(BASE_H-80); const w=18+Math.random()*28; const vx=120+Math.random()*160+score*0.2; obstacles.push({ x: BASE_W + w, y, w, h, vx }); }
-    function circleRectCollide(cx,cy,cr,rx,ry,rw,rh){ const nx=Math.max(rx,Math.min(cx,rx+rw)); const ny=Math.max(ry,Math.min(cy,ry+rh)); const dx=cx-nx, dy=cy-ny; return dx*dx+dy*dy<cr*cr; }
-
-    function update(dt){ if(paused) return; const dx=(keys.left?-1:0)+(keys.right?1:0); const dy=(keys.up?-1:0)+(keys.down?1:0); player.x+=dx*player.speed*dt; player.y+=dy*player.speed*dt; player.x=Math.max(player.r,Math.min(BASE_W-player.r,player.x)); player.y=Math.max(player.r,Math.min(BASE_H-player.r,player.y)); spawnTimer+=dt; if(spawnTimer>Math.max(0.25,0.9-score*0.0015)){spawnObstacle(); spawnTimer=0;} for(const o of obstacles){o.x-=o.vx*dt;} obstacles=obstacles.filter(o=>o.x+o.w>-5); for(const o of obstacles){ if(circleRectCollide(player.x,player.y,player.r,o.x,o.y,o.w,o.h)) return gameOver(); } score+=dt*100; scoreEl.textContent=Math.floor(score); }
-    function render(){ ctx.clearRect(0,0,BASE_W,BASE_H); ctx.fillStyle='#080d17'; ctx.fillRect(0,0,BASE_W,BASE_H); ctx.fillStyle='#22c55e'; obstacles.forEach(o=>ctx.fillRect(o.x,o.y,o.w,o.h)); drawPlayer(); if(paused){ ctx.fillStyle='rgba(0,0,0,.45)'; ctx.fillRect(0,0,BASE_W,BASE_H); ctx.fillStyle='#e5e7eb'; ctx.font='700 20px ui-sans-serif'; ctx.fillText('Paused', BASE_W/2-30, BASE_H/2); }}
-    function loop(t){ if(!running) return; const dt=Math.min(0.033,(t-(lastTime||t))/1000); lastTime=t; update(dt); render(); requestAnimationFrame(loop); }
-    function start(){ resetGame(); running=true; requestAnimationFrame(loop); }
-    function gameOver(){ running=false; best=Math.max(best,Math.floor(score)); localStorage.setItem('dodge_best',String(best)); bestEl.textContent=best; ctx.fillStyle='rgba(0,0,0,.55)'; ctx.fillRect(0,0,BASE_W,BASE_H); ctx.fillStyle='#e5e7eb'; ctx.font='700 26px ui-sans-serif'; ctx.fillText('Game Over', BASE_W/2-80, BASE_H/2-10); ctx.font='15px ui-sans-serif'; ctx.fillStyle='#9aa4b2'; ctx.fillText('Press R to restart', BASE_W/2-70, BASE_H/2+16); }
-
-    function pointerToCanvas(evt){ const rect=canvas.getBoundingClientRect(); const pt = evt.touches?evt.touches[0]:evt; const x=(pt.clientX-rect.left)*(BASE_W/rect.width); const y=(pt.clientY-rect.top)*(BASE_H/rect.height); return { x: Math.max(player.r,Math.min(BASE_W-player.r,x)), y: Math.max(player.r,Math.min(BASE_H-player.r,y)) } }
-    function onPointer(evt){ const p=pointerToCanvas(evt); player.x=p.x; player.y=p.y; }
-
-    const onKey=(e,down)=>{ const k=e.key.toLowerCase(); if(k==='arrowleft'||k==='a') keys.left=down; if(k==='arrowright'||k==='d') keys.right=down; if(k==='arrowup'||k==='w') keys.up=down; if(k==='arrowdown'||k==='s') keys.down=down; if(down && k==='p'){ paused=!paused; pauseStateEl.textContent=paused?'Yes':'No'; } if(down && k==='r'){ start(); } };
-    window.addEventListener('keydown',e=>onKey(e,true)); window.addEventListener('keyup',e=>onKey(e,false));
-
-    canvas.addEventListener('mousemove', onPointer);
-    canvas.addEventListener('touchstart', onPointer, {passive:true});
-    canvas.addEventListener('touchmove', onPointer, {passive:true});
-    startBtn.addEventListener('click', start);
-    resetGame();
-
-    // ======== CLICKER (bigger region + E turbo) ========
-    const clickBtn=$('#clickBtn'), clickCard=$('#clickerCard'), clickTotalEl=$('#clickTotal'), clickBestEl=$('#clickBest'), clickCpsEl=$('#clickCps'), clickReset=$('#clickReset');
-    const clicker={ total:Number(localStorage.getItem('clicker_total')||0), bestCps:Number(localStorage.getItem('clicker_best_cps')||0), times:[], auto:false };
-
-    function updateClickerUI(){ const now=performance.now(); clicker.times=clicker.times.filter(t=>now-t<=3000); const cps=(clicker.times.length/3).toFixed(2); clickCpsEl.textContent=cps; if(Number(cps)>clicker.bestCps){ clicker.bestCps=Number(cps); localStorage.setItem('clicker_best_cps',String(clicker.bestCps)); } clickBestEl.textContent=clicker.bestCps.toFixed(2); clickTotalEl.textContent=clicker.total; }
-    function doClick(){ clicker.total+=1; localStorage.setItem('clicker_total',String(clicker.total)); clicker.times.push(performance.now()); clickBtn.style.transform='translateY(2px)'; setTimeout(()=>{clickBtn.style.transform='';},60); updateClickerUI(); }
-
-    // Large click region: whole card except reset button
-    clickCard.addEventListener('click', (e)=>{ if(e.target===clickReset) return; doClick(); });
-    clickBtn.addEventListener('click', doClick);
-    clickReset.addEventListener('click', ()=>{ clicker.total=0; clicker.bestCps=0; clicker.times=[]; localStorage.removeItem('clicker_total'); localStorage.removeItem('clicker_best_cps'); updateClickerUI(); });
-
-    // E = turbo on/off
-    window.addEventListener('keydown', (e)=>{ if(e.key.toLowerCase()==='e') clicker.auto=true; });
-    window.addEventListener('keyup',   (e)=>{ if(e.key.toLowerCase()==='e') clicker.auto=false; });
-
-    function autoLoop(){ if(clicker.auto) doClick(); updateClickerUI(); requestAnimationFrame(autoLoop); }
-    updateClickerUI(); autoLoop();
-
-    // Reduce-motion respect
-    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){ document.body.style.scrollBehavior='auto'; }
-  })();
-  </script>
-
-  <!-- Accessibility helpers -->
-  <style>.sr{position:absolute;left:-9999px}.sr:focus{position:static}</style>
+  // ------- Audio Visualizer -------
+  const auC=qs('#au-c'),auCtx=auC.getContext('2d'),auStatus=qs('#au-status'); let auAC=null,auAnalyser=null,auSrc=null,auRAF=null;
+  function auResize(){const rect=auC.getBoundingClientRect();const ratio=window.devicePixelRatio||1;auC.width=Math.round(rect.width*ratio);auC.height=Math.round(rect.height*ratio);auCtx.setTransform(ratio,0,0,ratio,0,0);}
+  new ResizeObserver(auResize).observe(auC); auResize();
+  async function auStart(){try{if(auAC) return; auAC=new (window.AudioContext||window.webkitAudioContext)(); const stream=await navigator.mediaDevices.getUserMedia({audio:true}); auAnalyser=auAC.createAnalyser(); auAnalyser.fftSize=1024; const src=auAC.createMediaStreamSource(stream); src.connect(auAnalyser); auSrc=src; auLoop(); auStatus.textContent='Live'}catch(err){auStatus.textContent='Denied'; alert('Microphone access denied or unavailable.');}}
+  function auStop(){if(!auAC) return; cancelAnimationFrame(auRAF); if(auSrc){try{auSrc.mediaStream.getTracks().forEach(t=>t.stop())}catch{}} try{auAC.close()}catch{} auAC=null; auStatus.textContent='Idle'; auCtx.clearRect(0,0,auC.width,auC.height)}
+  function auLoop(){const W=auC.width,H=auC.height;const buf=new Uint8Array(auAnalyser.frequencyBinCount);const draw=()=>{auAnalyser.getByteFrequencyData(buf);auCtx.clearRect(0,0,W,H);const g=auCtx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#0b1220');g.addColorStop(1,'#081018');auCtx.fillStyle=g;auCtx.fillRect(0,0,W,H); const n=120, step=Math.floor(buf.length/n); const barW=W/(n*1.15); for(let i=0;i<n;i++){const v=buf[i*step]/255; const h=v*(H*0.9); const x=i*(barW*1.15)+8; auCtx.fillStyle='rgba(14,165,233,'+(0.35+v*0.65)+')'; auCtx.fillRect(x,H-h-6,barW,h); } auRAF=requestAnimationFrame(draw)}; draw()}
+  qs('#au-start').onclick=auStart; qs('#au-stop').onclick=auStop; qs('#au-back').onclick=()=>show('home');
+})();
+</script>
 </body>
 </html>
